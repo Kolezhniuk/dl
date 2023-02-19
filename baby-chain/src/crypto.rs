@@ -18,11 +18,11 @@ impl ChainKeyPair {
     }
 
     pub fn public_key(&self) -> &[u8; PUBLIC_KEY_LENGTH] {
-        &self.key_pair.public.as_bytes()
+        self.key_pair.public.as_bytes()
     }
 
     pub fn secret_key(&self) -> &[u8; SECRET_KEY_LENGTH] {
-        &self.key_pair.secret.as_bytes()
+        self.key_pair.secret.as_bytes()
     }
 }
 
