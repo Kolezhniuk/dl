@@ -7,7 +7,7 @@ const CTX: &[u8; 10] = b"baby-chain";
 
 #[derive(Debug)]
 pub struct ChainKeyPair {
-    key_pair: Keypair,
+    key_pair: Keypair
 }
 
 impl ChainKeyPair {
