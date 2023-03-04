@@ -5,8 +5,9 @@ use std::{
 
 use crate::{operation::Operation};
 use ed25519_dalek::{Digest, Sha512};
+use serde::{Serialize, Deserialize};
 
-#[derive(Debug)]
+#[derive(Debug, Serialize, Deserialize)]
 pub struct Transaction {
     pub transaction_id: Vec<u8>,
     pub initiator: Vec<u8>,
@@ -39,6 +40,25 @@ impl Transaction {
             initiator,
             operations,
             nonce,
+        }
+    }
+}
+
+
+impl PartialEq<Transaction> for Transaction {
+    fn eq(&self, other: &Transaction) -> bool {
+        *self.transaction_id == *other.transaction_id
+    }
+}
+
+// impelement copy trait
+impl Clone for Transaction {
+    fn clone(&self) -> Self {
+        Transaction {
+            transaction_id: self.transaction_id.clone(),
+            initiator: self.initiator.clone(),
+            operations: self.operations.clone(),
+            nonce: self.nonce,
         }
     }
 }

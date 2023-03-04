@@ -1,8 +1,9 @@
 mod account;
+mod block;
+mod blockchain;
 mod crypto;
 mod operation;
 mod transaction;
-
 fn main() {
     println!("Hello, Baby chain!");
 }
@@ -16,6 +17,8 @@ pub fn get_key_pair() -> ([u8; 32], [u8; 32]) {
 
 #[cfg(test)]
 mod tests {
+
+    use std::io::Chain;
 
     use super::*;
     // Note this useful idiom: importing names from outer (for mod tests) scope.
@@ -63,8 +66,12 @@ mod tests {
 
         let sig_bytes = crypto::sign_data(&sender_sk, &amount_to_sign.to_string().as_bytes());
 
-        let operation =
-            operation::Operation::create_operation(sender, receiver, amount_to_transfer, sig_bytes);
+        let operation = operation::Operation::create_operation(
+            sender,
+            receiver,
+            amount_to_transfer,
+            sig_bytes.to_vec(),
+        );
 
         (sender_id, operation)
     }
@@ -93,9 +100,16 @@ mod tests {
         let account_id2 = account_id.clone();
         let operation_2 = operation.clone();
         let transaction1 =
-        transaction::Transaction::create_transaction(account_id, vec![operation], 12345);
+            transaction::Transaction::create_transaction(account_id, vec![operation], 12345);
         let transaction2 =
             transaction::Transaction::create_transaction(account_id2, vec![operation_2], 12345);
         assert_eq!(transaction1.transaction_id, transaction2.transaction_id);
+    }
+
+    #[test]
+    fn test_init_blockchain() {
+        let chain = blockchain::Blockchain::init(10_000);
+        print!("{:?}", chain);
+        assert_eq!(chain.blocks.len(), 1);
     }
 }

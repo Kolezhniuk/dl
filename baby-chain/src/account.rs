@@ -1,8 +1,8 @@
 use std::clone;
 
 use ed25519_dalek::PUBLIC_KEY_LENGTH;
-
-#[derive(Debug, Hash)]
+use serde::{Deserialize, Serialize};
+#[derive(Debug, Hash, Serialize, Deserialize)]
 pub struct Account {
     pub account_id: Vec<u8>,
     pub pub_keys: Vec<[u8; PUBLIC_KEY_LENGTH]>,

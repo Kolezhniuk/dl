@@ -1,11 +1,24 @@
 use crate::{account::Account, crypto};
+use serde::{Deserialize, Serialize};
 
-#[derive(Debug, Hash, Clone)]
+#[derive(Debug, Hash, Clone, Serialize, Deserialize)]
 pub struct Operation {
     pub sender: Account,
     pub receiver: Account,
     pub amount: u64,
-    pub signature: [u8; 64],
+    pub signature: Vec<u8>,
+}
+
+fn to_signature_bytes<T>(v: Vec<T>) -> [T; 64]
+where
+    T: Copy,
+{
+    let slice = v.as_slice();
+    let array: [T; 64] = match slice.try_into() {
+        Ok(ba) => ba,
+        Err(_) => panic!("Expected a Vec of length {} but it was {}", 32, v.len()),
+    };
+    array
 }
 
 impl Operation {
@@ -13,7 +26,7 @@ impl Operation {
         sender: Account,
         receiver: Account,
         amount: u64,
-        signature: [u8; 64],
+        signature: Vec<u8>,
     ) -> Operation {
         Operation {
             sender,
@@ -26,7 +39,7 @@ impl Operation {
     pub fn verify_operation(operation: Operation) -> bool {
         let sender = operation.sender;
         let amount = operation.amount;
-        let signature = operation.signature;
+        let signature = to_signature_bytes(operation.signature);
 
         let sender_balance = sender.get_balance();
         if sender_balance < amount {
