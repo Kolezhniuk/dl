@@ -1,8 +1,8 @@
 use std::collections::{HashMap, HashSet};
 
-use crate::{account, block::{Block, self}, operation, transaction::Transaction};
+use crate::{block::{Block}, operation, transaction::Transaction};
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct Blockchain {
     // account_id -> balance
     pub coin_database: HashMap<Vec<u8>, u64>,

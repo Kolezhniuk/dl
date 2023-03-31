@@ -7,7 +7,7 @@ const CTX: &[u8; 10] = b"baby-chain";
 
 #[derive(Debug)]
 pub struct ChainKeyPair {
-    key_pair: Keypair
+    key_pair: Keypair,
 }
 
 impl ChainKeyPair {
@@ -47,4 +47,16 @@ pub fn verify_data(sig_bytes: &[u8; Signature::BYTE_SIZE], message: &[u8], pk: &
     let sig = Signature::from_bytes(sig_bytes).expect("error reading signature from bytes");
     let verified = pk.verify_prehashed(pre_hashed, Some(CTX), &sig);
     verified.is_ok()
+}
+
+//implement clone for ChainKeyPair
+impl Clone for ChainKeyPair {
+    fn clone(&self) -> Self {
+        ChainKeyPair {
+            key_pair: Keypair {
+                secret: self.key_pair.secret,
+                public: self.key_pair.public,
+            },
+        }
+    }
 }

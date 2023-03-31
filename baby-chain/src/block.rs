@@ -1,7 +1,7 @@
 use crate::transaction::Transaction;
 use sha256::digest;
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct Block {
     pub block_id: Vec<u8>,
     pub prev_hash: Vec<u8>,

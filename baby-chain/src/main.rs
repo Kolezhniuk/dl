@@ -1,9 +1,13 @@
 mod account;
 mod block;
 mod blockchain;
+mod connection;
 mod crypto;
+mod node;
 mod operation;
 mod transaction;
+mod user_application;
+mod wallet;
 fn main() {
     println!("Hello, Baby chain!");
 }
