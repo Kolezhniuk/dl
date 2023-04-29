@@ -1,2 +1,6 @@
 .vscode/settings.json
 baby-chain/target
+node_modules
+artifacts
+cache
+typechain-types
